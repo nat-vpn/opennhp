@@ -254,35 +254,6 @@ jobs:
           ls -la examples/server_plugin/
           echo ""
 
-          # Create go.work to ensure consistent dependency versions across all modules
-          echo "📦 Creating go.work for consistent dependency resolution..."
-          echo "go 1.25.6" > go.work
-          echo "" >> go.work
-          echo "use (" >> go.work
-          echo "	./nhp" >> go.work
-          echo "	./endpoints" >> go.work
-          # Add all plugin modules to workspace
-          for dir in ./examples/server_plugin/*/; do
-            if [ -f "$dir/go.mod" ]; then
-              echo "	$dir" >> go.work
-            else
-              for subdir in "$dir"/*/; do
-                if [ -f "$subdir/go.mod" ]; then
-                  echo "	$subdir" >> go.work
-                fi
-              done
-            fi
-          done
-          echo ")" >> go.work
-          echo "📄 Generated go.work:"
-          cat go.work
-          echo ""
-
-          # Sync workspace to ensure consistent dependencies
-          echo "🔄 Running go work sync..."
-          go work sync
-          echo ""
-
           # Initialize and build
           make init
           make serverd acd plugins
