@@ -1,8 +1,6 @@
-module github.com/OpenNHP/opennhp/examples/server_plugin
+module github.com/OpenNHP/opennhp/examples/server_plugin/oidc
 
-go 1.24.0
-
-toolchain go1.24.11
+go 1.25.6
 
 require (
 	github.com/OpenNHP/opennhp/nhp v0.6.0

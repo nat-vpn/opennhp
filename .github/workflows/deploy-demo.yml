@@ -23,7 +23,7 @@ env:
   DEPLOY_USER: ec2-user
   DEPLOY_PATH: /home/ec2-user/nhp-server
   TEMPLATES_SOURCE: docker/nhp-server/templates
-  GO_VERSION: '1.25'
+  GO_VERSION: '1.25.6'
   GOMODULE: github.com/OpenNHP/opennhp/nhp
 
 jobs:
