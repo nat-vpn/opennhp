@@ -26,7 +26,7 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # Set Go version
-ENV GO_VERSION=1.21.2
+ENV GO_VERSION=1.25.6
 
 # Set Go download URL based on architecture
 RUN case "${TARGETARCH}" in \
