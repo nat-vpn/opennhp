@@ -23,7 +23,7 @@ env:
   DEPLOY_USER: ec2-user
   DEPLOY_PATH: /home/ec2-user/nhp-server
   TEMPLATES_SOURCE: docker/nhp-server/templates
-  GO_VERSION: '1.25'
+  GO_VERSION: '1.25.6'
   GOMODULE: github.com/OpenNHP/opennhp/nhp
 
 jobs:
@@ -252,6 +252,35 @@ jobs:
           echo ""
           echo "📂 Plugin source directories (examples/server_plugin/):"
           ls -la examples/server_plugin/
+          echo ""
+
+          # Create go.work to ensure consistent dependency versions across all modules
+          echo "📦 Creating go.work for consistent dependency resolution..."
+          echo "go 1.25.6" > go.work
+          echo "" >> go.work
+          echo "use (" >> go.work
+          echo "	./nhp" >> go.work
+          echo "	./endpoints" >> go.work
+          # Add all plugin modules to workspace
+          for dir in ./examples/server_plugin/*/; do
+            if [ -f "$dir/go.mod" ]; then
+              echo "	$dir" >> go.work
+            else
+              for subdir in "$dir"/*/; do
+                if [ -f "$subdir/go.mod" ]; then
+                  echo "	$subdir" >> go.work
+                fi
+              done
+            fi
+          done
+          echo ")" >> go.work
+          echo "📄 Generated go.work:"
+          cat go.work
+          echo ""
+
+          # Sync workspace to ensure consistent dependencies
+          echo "🔄 Running go work sync..."
+          go work sync
           echo ""
 
           # Initialize and build

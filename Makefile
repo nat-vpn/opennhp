@@ -95,6 +95,25 @@ generate-version-and-build:
 init:
 	@echo "$(COLOUR_BLUE)[OpenNHP] Initializing... $(END_COLOUR)"
 	git clean -df release
+	cd nhp && go mod download
+	cd endpoints && go mod download
+	@for dir in ./examples/server_plugin/*/; do \
+		if [ -f "$$dir/go.mod" ]; then \
+			echo "$(COLOUR_BLUE)[Plugin-$$(basename $$dir)] Running go mod download... $(END_COLOUR)"; \
+			cd "$$dir" && go mod download && cd - > /dev/null; \
+		else \
+			for subdir in "$$dir"/*/; do \
+				if [ -f "$$subdir/go.mod" ]; then \
+					echo "$(COLOUR_BLUE)[Plugin-$$(basename $$subdir)] Running go mod download... $(END_COLOUR)"; \
+					cd "$$subdir" && go mod download && cd - > /dev/null; \
+				fi \
+			done \
+		fi \
+	done
+
+# Use this target when you need to update dependencies (will modify go.sum)
+tidy:
+	@echo "$(COLOUR_BLUE)[OpenNHP] Running go mod tidy... $(END_COLOUR)"
 	cd nhp && go mod tidy
 	cd endpoints && go mod tidy
 	@for dir in ./examples/server_plugin/*/; do \
@@ -110,6 +129,7 @@ init:
 			done \
 		fi \
 	done
+	@echo "$(COLOUR_GREEN)[OpenNHP] go mod tidy complete. Remember to commit go.sum files!$(END_COLOUR)"
 
 agentd:
 	@echo "$(COLOUR_BLUE)[OpenNHP] Building nhp-agent... $(END_COLOUR)"
@@ -283,7 +303,8 @@ help:
 	@echo ""
 	@echo "$(COLOUR_GREEN)Build:$(END_COLOUR)"
 	@echo "  make            - Build all binaries (default)"
-	@echo "  make init       - Initialize dependencies"
+	@echo "  make init       - Download dependencies (preserves go.sum)"
+	@echo "  make tidy       - Update dependencies (modifies go.sum)"
 	@echo "  make agentd     - Build nhp-agent"
 	@echo "  make serverd    - Build nhp-server"
 	@echo "  make acd        - Build nhp-ac"
@@ -340,4 +361,4 @@ archive:
 	@cd release && mkdir -p archive && tar -czvf ./archive/$(PACKAGE_FILE) nhp-agent nhp-ac nhp-db nhp-server
 	@echo "$(COLOUR_GREEN)[OpenNHP] Package ${PACKAGE_FILE} archived!$(END_COLOUR)"
 
-.PHONY: all generate-version-and-build init agentd acd serverd db linuxagentsdk androidagentsdk macosagentsdk iosagentsdk devicesdk plugins dev test test-race fmt lint clean help fuzz fuzz-quick coverage coverage-html archive ebpf clean_ebpf
+.PHONY: all generate-version-and-build init tidy agentd acd serverd db linuxagentsdk androidagentsdk macosagentsdk iosagentsdk devicesdk plugins dev test test-race fmt lint clean help fuzz fuzz-quick coverage coverage-html archive ebpf clean_ebpf
