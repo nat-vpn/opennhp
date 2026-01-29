@@ -1,6 +1,8 @@
 module github.com/OpenNHP/opennhp/examples/authenticator_plugin
 
-go 1.24.6
+go 1.25.6
+
+toolchain go1.25.6
 
 require (
 	github.com/OpenNHP/opennhp/nhp v0.6.0

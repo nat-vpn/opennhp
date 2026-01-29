@@ -3,6 +3,14 @@ FROM --platform=$BUILDPLATFORM ubuntu:22.04 AS builder
 # Get target platform architecture
 ARG TARGETARCH
 ARG TARGETOS
+ARG APT_MIRROR=
+
+# Switch APT mirror if specified
+RUN if [ -n "$APT_MIRROR" ]; then \
+    sed -i "s|ports.ubuntu.com|${APT_MIRROR}|g" /etc/apt/sources.list && \
+    sed -i "s|archive.ubuntu.com|${APT_MIRROR}|g" /etc/apt/sources.list && \
+    sed -i "s|security.ubuntu.com|${APT_MIRROR}|g" /etc/apt/sources.list; \
+    fi
 
 # Install basic tools
 RUN apt-get update && \
@@ -62,6 +70,16 @@ RUN CGO_ENABLED=0 GOOS=linux go mod tidy && go build -o app
 
 # Stage 2: Create a minimal runtime image
 FROM ubuntu:22.04
+
+ARG APT_MIRROR=
+
+# Switch APT mirror if specified
+RUN if [ -n "$APT_MIRROR" ]; then \
+    sed -i "s|ports.ubuntu.com|${APT_MIRROR}|g" /etc/apt/sources.list && \
+    sed -i "s|archive.ubuntu.com|${APT_MIRROR}|g" /etc/apt/sources.list && \
+    sed -i "s|security.ubuntu.com|${APT_MIRROR}|g" /etc/apt/sources.list; \
+    fi
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
