@@ -72,12 +72,12 @@ build_base() {
     echo -e "${BLUE}Building opennhp-base image...${NC}"
     export_env
 
-    local build_args="--no-cache -t opennhp-base:latest -f Dockerfile.base .."
+    local build_args=(--no-cache -t opennhp-base:latest -f Dockerfile.base)
     if [ "$USE_CHINA_MIRROR" = true ]; then
-        build_args="--build-arg GOPROXY=$GOPROXY --build-arg APT_MIRROR=$APT_MIRROR $build_args"
+        build_args+=(--build-arg "GOPROXY=$GOPROXY" --build-arg "APT_MIRROR=$APT_MIRROR")
     fi
 
-    docker build $build_args
+    docker build "${build_args[@]}" ..
     echo -e "${GREEN}Base image built successfully!${NC}"
 }
 
