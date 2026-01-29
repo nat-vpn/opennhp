@@ -14,6 +14,9 @@ import (
 	toml "github.com/pelletier/go-toml/v2"
 	"golang.org/x/oauth2"
 
+	// Blank import to ensure oauth2 internal packages match main program
+	_ "cloud.google.com/go/auth/oauth2adapt"
+
 	"github.com/OpenNHP/opennhp/nhp/common"
 	nhplog "github.com/OpenNHP/opennhp/nhp/log"
 	"github.com/OpenNHP/opennhp/nhp/plugins"
