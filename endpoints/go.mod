@@ -19,7 +19,9 @@ require (
 	github.com/sigstore/cosign/v2 v2.2.4
 	github.com/spf13/viper v1.21.0
 	github.com/urfave/cli/v2 v2.27.7
+	github.com/coreos/go-oidc/v3 v3.17.0
 	golang.org/x/mobile v0.0.0-20190719004257-d2bd2a29d028
+	golang.org/x/oauth2 v0.34.0
 )
 
 require (
@@ -36,7 +38,6 @@ require (
 	github.com/cloudwego/base64x v0.1.6 // indirect
 	github.com/containerd/stargz-snapshotter/estargz v0.18.1 // indirect
 	github.com/coocood/freecache v1.2.4 // indirect
-	github.com/coreos/go-oidc/v3 v3.17.0 // indirect
 	github.com/coreos/go-semver v0.3.1 // indirect
 	github.com/coreos/go-systemd/v22 v22.6.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.7 // indirect
@@ -177,7 +178,6 @@ require (
 	golang.org/x/crypto v0.47.0 // indirect
 	golang.org/x/mod v0.31.0 // indirect
 	golang.org/x/net v0.48.0 // indirect
-	golang.org/x/oauth2 v0.34.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.40.0 // indirect
 	golang.org/x/term v0.39.0 // indirect
