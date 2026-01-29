@@ -1,4 +1,4 @@
-module github.com/OpenNHP/opennhp/examples/oidc_plugin
+module github.com/OpenNHP/opennhp/examples/server_plugin/oidc
 
 go 1.25.6
 
